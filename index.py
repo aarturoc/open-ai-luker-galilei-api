@@ -15,7 +15,7 @@ openai.api_key = config('OPENAI_API_KEY')
 def read_root():
     return{"Hello":"FastAPI"}
 
-@app.put("/file/upload")
+@app.post("/file/upload")
 async def upload(file:UploadFile = File(...)):
     file_ext = file.filename.split(".").pop()
     #file_name = token_hex(10)
