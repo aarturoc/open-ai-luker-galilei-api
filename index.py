@@ -27,6 +27,18 @@ async def uploadfile(file:UploadFile = File(...)):
 async def uploadfile(file:UploadFile = File(...), question: Optional[str] = Form(None)):
     Response = await upload(file)
     RespFromWhisper = Response["transcript"]
-    ValidationFromChat = RequestFromText(question, RespFromWhisper)
+    if question == "¿Qué le gusta hacer a la gata?:":
+        ValidationFromChat = RequestFromText(question, RespFromWhisper)
+    if question == "¿Qué le gusta hacer a la gata?:":
+        pValidationFromChat = RequestFromText(question, RespFromWhisper)
+    if question == "¿Qué le gusta hacer a la gata?:":
+        ValidationFromChat = RequestFromText(question, RespFromWhisper)
+    if question == "¿Qué le gusta hacer a la gata?:":
+        ValidationFromChat = RequestFromText(question, RespFromWhisper)
+    if question == "¿Qué le gusta hacer a la gata?:":
+        ValidationFromChat = RequestFromText(question, RespFromWhisper)
+    if question == "":
+        ValidationFromChat = "Error, there is no question in the value"
+    
     
     return ValidationFromChat
