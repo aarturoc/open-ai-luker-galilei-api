@@ -32,7 +32,7 @@ async def uploadfile(file:UploadFile = File(...), question: Optional[str] = Form
     if question == "¿Quién es la dueña de la gata?:":
         ValidationFromChat = RequestFromText(question, RespFromWhisper)
     if question == "¿Qué le gusta hacer a la gata?:":
-        pValidationFromChat = RequestFromText(question, RespFromWhisper)
+        ValidationFromChat = RequestFromText(question, RespFromWhisper)
     if question == "¿Por qué está preocupada María?:":
         ValidationFromChat = RequestFromText(question, RespFromWhisper)
     if question == "¿De donde salían los maullidos?:":
