@@ -1,31 +1,36 @@
-from difflib import SequenceMatcher
-import re
+import string
+import unidecode
 
-def comparar_textos(original, leido_por_nino):
-    # Tokenizar los textos en palabras
-    palabras_originales = original.split()
-    palabras_leidas = leido_por_nino.split()
+def CompareFromText(texto_niño):
 
-    # Calcular el número de palabras en cada texto
-    num_palabras_originales = len(palabras_originales)
-    num_palabras_leidas = len(palabras_leidas)
+    texto_guia = """María tiene una gata. A la gata le gusta jugar. Un día María no encontró a su gata. María y su mamá la buscaron por toda la casa. De pronto oyeron “miau, miau”. Los maullidos eran suaves. Venían de debajo de la cama. María y su mamá encontraron a la gata y dos gatitos. La gata de María tuvo gatitos. La mamá de María le dijo: Yo también tendré un bebé. Vas a tener un hermanito. María sonrió y se fue corriendo a la casa de su amiga Lorena. Al llegar le dijo a Lorena: “Vengo a contarte grandes noticias"""
+    # Crear una tabla de traducción para eliminar puntuaciones, tildes y caracteres especiales
+    translator = str.maketrans("", "", string.punctuation)
 
-    # Calcular el número de aciertos utilizando SequenceMatcher
-    comparador = SequenceMatcher(None, palabras_originales, palabras_leidas)
-    aciertos = comparador.find_longest_match(0, num_palabras_originales, 0, num_palabras_leidas).size
+    # Eliminar tildes y diacríticos utilizando la biblioteca unidecode
+    texto_guia = unidecode.unidecode(texto_guia)
+    texto_niño = unidecode.unidecode(texto_niño)
 
-    return num_palabras_originales, num_palabras_leidas, aciertos
+    # Tokenizar el texto en palabras, eliminar puntuaciones y convertir a minúsculas
+    palabras_guia = [palabra.translate(translator) for palabra in texto_guia.lower().split()]
+    palabras_niño = [palabra.translate(translator) for palabra in texto_niño.lower().split()]
 
-def CompareFromText(texto_leido):
-    # Ejemplo de uso
-    texto_original =  re.sub(r'[^a-zA-Z0-9áéíóúü ]', '', "María tiene una gata. A la gata le gusta jugar. Un día María no encontró a su gata. María y su mamá la buscaron por toda la casa. De pronto oyeron “miau, miau”. Los maullidos eran suaves. Venían de debajo de la cama. María y su mamá encontraron a la gata y dos gatitos. La gata de María tuvo gatitos. La mamá de María le dijo: Yo también tendré un bebé. Vas a tener un hermanito. María sonrió y se fue corriendo a la casa de su amiga lorena. Al llegar le dijo a Lorena: “Vengo a contarte grandes noticias").lower()
-    texto_leido_por_nino = texto_leido
-    print("Texto Original: "+texto_original)
-    print("Texto Niño: "+texto_leido_por_nino)
-    num_palabras_originales, num_palabras_leidas, aciertos = comparar_textos(texto_original, texto_leido_por_nino)
+    # Crear un diccionario para contar la frecuencia de cada palabra en el texto guía
+    dic_guia = {}
+    for palabra in palabras_guia:
+        dic_guia[palabra] = dic_guia.get(palabra, 0) + 1
 
-    print(f"Número de palabras en el texto original: {num_palabras_originales}")
-    print(f"Número de palabras en el texto leído por el niño: {num_palabras_leidas}")
-    print(f"Número de aciertos: {aciertos}")
+    # Crear un diccionario para contar la frecuencia de cada palabra en el texto del niño
+    dic_niño = {key: 0 for key in dic_guia}
 
-    return {"Número de palabras en el texto original":num_palabras_originales, "Número de palabras en el texto leído por el niño":num_palabras_leidas, "Número de aciertos":aciertos}
+    # Contar la frecuencia de cada palabra en el texto del niño
+    for palabra_niño in palabras_niño:
+        if palabra_niño in dic_guia:
+            dic_niño[palabra_niño] += 1
+
+
+    palabras_totales=len(palabras_guia)
+    palabras_leidas=len(palabras_niño)
+    diferencia_total = palabras_totales-sum(abs(dic_guia[llave] - dic_niño[llave]) for llave in dic_guia)
+
+    return {"Total palabras":palabras_totales, "Palabras leídas": palabras_leidas, "Aciertos": diferencia_total}
