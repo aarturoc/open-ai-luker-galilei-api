@@ -1,8 +1,8 @@
-from langchain import PromptTemplate
+from langchain.prompts import PromptTemplate
 
-from langchain.llms import OpenAI
+from langchain_community.llms import OpenAI
 from galilei_egra.egra.utils import (get_openai_api_key)
-from langchain import LLMChain   
+from langchain.chains import LLMChain
 
 from dotenv import load_dotenv
 load_dotenv() 
