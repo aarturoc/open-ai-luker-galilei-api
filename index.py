@@ -16,9 +16,9 @@ from galilei_egra.egra.conversation import CompareFromText
 app = FastAPI()
 openai.api_key = config('OPENAI_API_KEY')
 
-@app.get("/")
+@app.get("/health-check")
 def read_root():
-    return{"Hello":"FastAPI"}
+    return{"Status Code":"200 OK"}
 
 @app.post("/file/upload")
 async def uploadfile(file:UploadFile = File(...)):
