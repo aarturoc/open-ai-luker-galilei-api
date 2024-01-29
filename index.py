@@ -29,6 +29,7 @@ async def uploadfile(file:UploadFile = File(...)):
 async def uploadfile(file:UploadFile = File(...), question: Optional[str] = Form(None)):
     Response = await upload(file)
     RespFromWhisper = Response["transcript"]
+    print("file: " + RespFromWhisper +" question: "+question)
     if question == "¿Quién es la dueña de la gata?:":
         ValidationFromChat = RequestFromText(question, RespFromWhisper)
     if question == "¿Qué le gusta hacer a la gata?:":
