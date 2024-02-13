@@ -31,7 +31,7 @@ app.add_middleware(
 #Conetion with Open Ai 
 openai.api_key = config('OPENAI_API_KEY')
 #Connection with mongo
-client = MongoClient(config('MONGO_URL'))
+client = MongoClient("mongodb+srv://GaleliLearning:Admin2023@cluster0.f35iafv.mongodb.net/EgraDataset?retryWrites=true&w=majority")
 db = client.get_database()
 collection = db["InfoAudio"]
 

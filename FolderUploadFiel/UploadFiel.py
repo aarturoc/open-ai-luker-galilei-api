@@ -3,6 +3,7 @@ import os
 import openai
 from openai import OpenAI
 from decouple import config
+from transformers import pipeline
 
 openai.api_key = config('OPENAI_API_KEY')
 
@@ -12,6 +13,9 @@ async def upload(file:UploadFile = File(...)):
     file_name = file.filename
     #file_path = f"{file_name}.{file_ext}"
     file_path = file_name
+
+    
+
     with open(file_path, "wb") as f:
         content = await file.read()
         f.write(content)
@@ -22,13 +26,15 @@ async def upload(file:UploadFile = File(...)):
         audio_file = open(audio_file_path, "rb")
     
         # Make the transcription request
-        transcription = openai.audio.transcriptions.create(
-            model="whisper-1",
-            file= audio_file,
-            response_format="text",
-            language="es",
-        )
-        transcript = transcription
+        #transcription = openai.audio.transcriptions.create(
+        #    model="whisper-1",
+        #    file= audio_file,
+        #    response_format="text",
+        #    language="es",
+        #)
+        pipe = pipeline(model="arturoapio/whisper-small-sp-egra")
+        transcript= pipe(file_path)["text"]
+        #print(transcript)
     
         # Imprime la transcripción
         print("Transcripción:")
