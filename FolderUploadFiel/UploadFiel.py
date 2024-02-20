@@ -25,17 +25,16 @@ async def upload(file:UploadFile = File(...)):
         audio_file_path = file_path
         audio_file = open(audio_file_path, "rb")
     
-        # Make the transcription request
-        #transcription = openai.audio.transcriptions.create(
-        #    model="whisper-1",
-        #    file= audio_file,
-        #    response_format="text",
-        #    language="es",
-        #)
-        pipe = pipeline(model="arturoapio/whisper-small-sp-egra")
-        transcript= pipe(file_path)["text"]
+        #Make the transcription request
+        transcription = openai.audio.transcriptions.create(
+            model="whisper-1",
+            file= audio_file,
+            response_format="text",
+            language="es",
+        )
+        
         #print(transcript)
-    
+        transcript = transcription 
         # Imprime la transcripción
         print("Transcripción:")
         print(transcript)
